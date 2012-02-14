@@ -1,0 +1,52 @@
+<form class="form-horizontal" action="/record/add" method="post" >
+<fieldset>
+          <legend> aggiungi record a <%= @zona %></legend>
+            <div class="control-group">
+            	<label class="control-label" for="input01" name="zona"></label>
+            		<div class="controls">
+             		 <input type="text" class="input-xlarge" id="input01" name="zona" value="<%= @zona %>">
+            		</div>
+            </div> 
+          <div class="control-group">
+            <label class="control-label" for="input01">@</label>
+	   <div class="controls">
+              <input type="text" class="input-xlarge" id="input01" name="name">
+              <p class="help-block">inserisci qui il nome di dominio</p>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="select01">Type</label>
+            <div class="controls">
+              <select id="select01" name="type">
+                <option>NS</option>
+                <option>A</option>
+                <option>TXT</option>
+                <option>CNAME</option>
+                <option>SOA</option>
+              </select>
+            </div>
+          </div>
+	    <div class="control-group">
+            <label class="control-label" for="input01">Priority</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" id="input01" name="prio">
+            </div>
+          </div>
+            <div class="control-group">
+            <label class="control-label" for="input01">Content</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" id="input01" name="content">
+            </div>
+          </div>
+            <div class="control-group">
+            <label class="control-label" for="input01">ttl</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" id="input01" name="ttl">
+            </div>
+          </div>
+           <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Crea</button>
+            <button type="reset" class="btn">Annulla</button>
+          </div>
+        </fieldset>
+</form>

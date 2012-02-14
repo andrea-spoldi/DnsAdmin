@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf8">
+  <title><%= @title %></title>
+  <!--<link href="/reset.css" rel="stylesheet">-->
+  <link href="/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+    <%= yield %>
+</div>
+</div>
+</body>
+</html>

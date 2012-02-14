@@ -1,0 +1,18 @@
+<table class="table table-striped"> 
+<tr>
+<td>nome</td>
+<td>tipo</td>
+<td>priorità</td>
+<td>contenuto</td>
+<td>ttl</td>
+</tr>
+<% @record.each do |line| %>          
+<tr>     
+   <td><%= line['name'] %></td>
+   <td><%= line['type'] %></td>
+   <td><%= line['priority'] %></td>
+   <td><%= line['content'] %></td>
+   <td><%= line['ttl'] %></td>
+<% end %>
+</tr>
+</table>
