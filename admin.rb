@@ -45,6 +45,9 @@ end
 
 get '/zona/:name/edit' do
   @title = 'DNS - Add Record'
+  @call = "http://localhost:8080/zona" + "/" + params[:name]
+  response = RestClient.get @call, :content_type => :json
+  @record = JSON.parse(response)
   @zona = params[:name]
   erb :addrecord
 end
@@ -62,7 +65,7 @@ end
 	}
   case response.code
   when 200
-    redirect '/records/' + params[:zona]
+    redirect '/zona/' + params[:zona] + '/edit'
   end
 end
 
