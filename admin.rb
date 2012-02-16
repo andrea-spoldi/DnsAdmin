@@ -4,10 +4,12 @@ require 'rubygems'
 require 'sinatra'
 require 'rest-client'
 require 'json'
-
+require 'rack-flash'
 
 class Admin < Sinatra::Base
 
+use Rack::Flash
+enable :sessions
 
 configure do
   set :public_folder, Proc.new { File.join(root, "static") }
@@ -39,12 +41,12 @@ get '/records/:zona' do
 end
 
 get '/new' do
-  @title = 'DNS - Nuova Zona'
+  @title = 'DNS - New'
   erb :addrecord
 end
 
 get '/zona/:name/edit' do
-  @title = 'DNS - Add Record'
+  @title = 'DNS - ' + params[:name] + ' Add Record'
   @call = "http://localhost:8080/zona" + "/" + params[:name]
   response = RestClient.get @call, :content_type => :json
   @record = JSON.parse(response)
@@ -65,17 +67,38 @@ end
 	}
   case response.code
   when 200
+    flash[:notice] = "Record created"
     redirect '/zona/' + params[:zona] + '/edit'
   end
 end
 
+post '/record/edit/?' do
+  new_params = accept_params(params, :id, :name, :type, :content, :prio, :ttl)
+  #@call = "http://localhost:8080/record" + "/" + "#{params[:id]}" + "/edit/"
+  #response = RestClient.put @call,
+  response = RestClient.put 'http://localhost:8080/record/edit',
+        {
+                :id => params[:id],
+                :name => params[:name],
+                :type => params[:type],
+                :content => params[:content],
+                :prio => params[:prio],
+                :ttl => params[:ttl]
+        }
+  case response.code
+  when 200
+    flash[:notice] = "record updated"
+    redirect '/zona/' + params[:zona] + '/edit'
+  end
+end
 
 post '/zona/new/?' do 
-  @title = 'DNS - Nuova Zona'
+  @title = 'DNS - New'
   @call = "http://localhost:8080/zona/new" + "/" + "#{params[:name]}"
   response = RestClient.post @call, :content_type => :json
   case response.code
   when 201
+    flash[:notice] = "Zone created"
     redirect '/'
   end
 end

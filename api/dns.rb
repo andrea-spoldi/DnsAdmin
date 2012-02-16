@@ -69,9 +69,10 @@ class DnsRecord
 	property :id, Serial
 	property :name, String, :required => false, :length => 255, :index => [:name, :name_active_zone, :name_active_rtype_zone]
 	property :type, String, :required => true, :default => 'a', :length => 10, :index => [:name_active_rtype_zone]
-	property :content, String, :required => true, :length => 255
-	property :prio, Integer
-	property :ttl, Integer
+	#property :content, String, :required => true, :length => 255
+	property :content, IPAddress, :required => true, :length => 255
+	property :prio, Integer, :default => 10
+	property :ttl, Integer, :default => 86400
 	property :active, Boolean, :required => true, :default => true, :index => [:name_active_zone, :name_active_rtype_zone]
 
 	#belongs_to :customer, :required => false
@@ -176,6 +177,9 @@ get "/zona/:id/records", :provides => :json do
         json_status 404, "Not found"
       end
   end
+ 
+ 
+
  post "/record/new", :provides => :json do
         content_type :json
         new_params = accept_params(params, :name, :type, :content, :prio, :ttl)
@@ -185,6 +189,21 @@ get "/zona/:id/records", :provides => :json do
                         zona.dns_records.to_json
                         else
                         json_status 400, zona.dns_records.errors.to_hash
+                end
+                else
+                        json_status 404, "Not found"
+                end
+  end
+
+ put "/record/edit", :provides => :json do
+        content_type :json
+        new_params = accept_params(params, :id, :name, :type, :content, :prio, :ttl)
+                if record = DnsRecord.first_or_create(:id => params[:id].to_i)
+                        record.attributes = record.attributes.merge(new_params)
+                if record.save
+                        record.to_json
+                        else
+                        json_status 400, record.errors.to_hash
                 end
                 else
                         json_status 404, "Not found"

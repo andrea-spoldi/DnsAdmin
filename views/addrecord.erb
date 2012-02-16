@@ -1,27 +1,52 @@
-<table class="table table-striped">
+<h2><%= @zona %></h2>
+<table class="table table-striped table-bordered table-condensed">
 <tr>
-<td>nome</td>
-<td>tipo</td>
-<td>priorità</td>
-<td>contenuto</td>
+<!-- <td>id</td> -->
+<td>name</td>
+<td>type</td>
+<td>priority</td>
+<td>content</td>
 <td>ttl</td>
+<td>actions</td>
 </tr>
 <% @record.each do |line| %>
+<!--
 <tr>
    <td><%= line['name'] %></td>
    <td><%= line['type'] %></td>
-   <td><%= line['priority'] %></td>
+   <td><%= line['prio'] %></td>
    <td><%= line['content'] %></td>
    <td><%= line['ttl'] %></td>
-<% end %>
+   <td>
+	<a class="btn btn-small" href="#"><i class="icon-cog"></i> Edit</a>
+	<a class="btn btn-danger" href="#"><i class="icon-trash icon-white"></i> Del</a>
+   </td>
+</tr>-->
+<form class="well form-search" action="/record/edit" method="post">
+<fieldset>
+<tr>
+	<input type="hidden" class="span2" name="zona" value="<%= @zona %>">
+	<input type="hidden" class="span2" name="id" value="<%= line['id'] %>">
+        <td><input type="text" class="span2" name="name" value="<%= line['name'] %>"></td>
+        <td><input type="text" class="span2" name="type" value="<%= line['type'] %>"></td>
+	<td><input type="text" class="span2" name="prio" value="<%= line['prio'] %>"></td>
+	<td><input type="text" class="span2" name="content" value="<%= line['content'] %>"></td>
+	<td><input type="text" class="span2" name="ttl" value="<%= line['ttl'] %>"></td>
+	<td>
+		<button class="btn btn-small" type="submit"><i class="icon-cog"></i> Edit</button>
+		<a class="btn btn-danger" href="#"><i class="icon-trash icon-white"></i> Del</a>
+	</td>
 </tr>
+</fieldset>
+</form>
+<%end%>
 </table>
 
 <form class="form-horizontal" action="/record/add" method="post" >
 <fieldset>
-          <legend> aggiungi record a <%= @zona %></legend>
+          <legend> Add new record</legend>
             <div class="control-group">
-            	<label class="control-label" for="input01" name="zona"></label>
+            	<label class="control-label" for="input01" name="zona">Zone</label>
             		<div class="controls">
              		 <input type="text" class="input-xlarge" id="input01" name="zona" value="<%= @zona %>">
             		</div>
@@ -30,25 +55,54 @@
             <label class="control-label" for="input01">@</label>
 	   <div class="controls">
               <input type="text" class="input-xlarge" id="input01" name="name">
-              <p class="help-block">inserisci qui il nome di dominio</p>
+              <p class="help-block">record name</p>
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="select01">Type</label>
             <div class="controls">
               <select id="select01" name="type">
-                <option>NS</option>
-                <option>A</option>
-                <option>TXT</option>
-                <option>CNAME</option>
-                <option>SOA</option>
-              </select>
+<option>A</option>
+<option>AAAA</option>
+<option>AFSDB</option>
+<option>APL</option>
+<option>CERT</option>
+<option>CNAME</option>
+<option>DHCID</option>
+<option>DLV</option>
+<option>DNAME</option>
+<option>DNSKEY</option>
+<option>DS</option>
+<option>HIP</option>
+<option>IPSECKEY</option>
+<option>KEY</option>
+<option>KX</option>
+<option>LOC</option>
+<option>MX</option>
+<option>NAPTR</option>
+<option>NS</option>
+<option>NSEC</option>
+<option>NSEC3</option>
+<option>NSEC3PARAM</option>
+<option>PTR</option>
+<option>RP</option>
+<option>RRSIG</option>
+<option>SIG</option>
+<option>SOA</option>
+<option>SPF</option>
+<option>SRV</option>
+<option>SSHFP</option>
+<option>TA</option>
+<option>TKEY</option>
+<option>TSIG</option>
+<option>TXT</option>              
+</select>
             </div>
           </div>
 	    <div class="control-group">
             <label class="control-label" for="input01">Priority</label>
             <div class="controls">
-              <input type="text" class="input-xlarge" id="input01" name="prio">
+              <input type="text" class="input-xlarge" id="input01" value="10" name="prio">
             </div>
           </div>
             <div class="control-group">
@@ -64,8 +118,8 @@
             </div>
           </div>
            <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Crea</button>
-            <button type="reset" class="btn">Annulla</button>
+            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="reset" class="btn">Reset</button>
           </div>
         </fieldset>
 </form>

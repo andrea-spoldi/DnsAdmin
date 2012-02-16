@@ -22,7 +22,7 @@ gem "rack-contrib"
 gem "sinatra"
 gem "systemu"
 gem "unicorn"
-gem "rest_client"
+gem "rest-client"
 
 group :production do
   gem "do_mysql"
