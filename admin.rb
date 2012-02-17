@@ -93,6 +93,30 @@ post '/record/edit/?' do
   end
 end
 
+get '/zona/delete/:id' do 
+ new_params = accept_params(params, :id, :zona, :name)
+ @call = "http://localhost:8080/zona/delete" + "/" + "#{params[:id]}"
+ response = RestClient.delete @call
+ case response.code
+  when 204
+    flash[:notice] = "zone deleted"
+    redirect '/domini'
+  end
+
+end
+
+get '/record/:zona/delete/:id' do
+  #new_params = accept_params(params, :id, :zona, :name)
+  @call = "http://localhost:8080/record" + "/" + "#{params[:zona]}" + "/" + "delete" + "/" + "#{params[:id]}"
+  #response = RestClient.put @call,
+  response = RestClient.delete @call
+  case response.code
+  when 204
+    flash[:notice] = "record deleted"
+    redirect '/zona/' + params[:zona] + '/edit'
+  end
+end
+
 post '/zona/new/?' do 
   @title = 'DNS - New'
   @call = "http://localhost:8080/zona/new" + "/" + "#{params[:name]}"

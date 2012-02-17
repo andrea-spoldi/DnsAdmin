@@ -34,7 +34,7 @@
 	<td><input type="text" class="span2" name="ttl" value="<%= line['ttl'] %>"></td>
 	<td>
 		<button class="btn btn-small" type="submit"><i class="icon-cog"></i> Edit</button>
-		<a class="btn btn-danger" href="#"><i class="icon-trash icon-white"></i> Del</a>
+		<a class="btn btn-danger" href="/record/<%= @zona %>/delete/<%= line['id'] %>"><i class="icon-trash icon-white"></i> Del</a>
 	</td>
 </tr>
 </fieldset>

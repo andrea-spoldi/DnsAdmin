@@ -19,7 +19,7 @@
    <td><%= record['active'] %></td>
     <td>
         <a class="btn btn-small" href="/zona/<%= record['name'] %>/edit"><i class="icon-cog"></i> Edit</a>
-        <a class="btn btn-danger" href="#"><i class="icon-trash icon-white"></i> Del</a>
+        <a class="btn btn-danger" href="/zona/delete/<%= record['id'] %>"><i class="icon-trash icon-white"></i> Del</a>
    </td> 
  </tr>
   <% end %>

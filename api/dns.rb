@@ -201,7 +201,7 @@ get "/zona/:id/records", :provides => :json do
         content_type :json
         new_params = accept_params(params, :id, :name, :type, :content, :prio, :ttl)
                 if zona = DnsZone.first(:name => params[:zona].to_s)
-                        modified = zona.dns_records.first_or_create(:id => params[:id].to_s)
+                        modified = zona.dns_records.first_or_create(:id => params[:id].to_i)
                         modified.attributes = modified.attributes.merge(new_params)
                 if modified.save
                         zona.serial = zona.generate_serial
@@ -254,6 +254,23 @@ delete "/zona/delete/:id", :provides => :json do
 		json.status 404, "Not Found"
 	end
 end
+
+delete "/record/:zona/delete/:id", :provides => :json do
+        content_type :json
+                if zona = DnsZone.first(:name => params[:zona].to_s)
+                        record = zona.dns_records.first_or_create(:id => params[:id].to_i)
+                if record.destroy
+                        zona.serial = zona.generate_serial
+                        zona.save
+			status 204
+                        else
+                        json_status 400, zona.dns_records.errors.to_hash
+                end
+                else
+                        json_status 404, "Not found"
+                end
+  end
+
 
   ## helpers
 
