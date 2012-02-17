@@ -73,12 +73,13 @@ end
 end
 
 post '/record/edit/?' do
-  new_params = accept_params(params, :id, :name, :type, :content, :prio, :ttl)
+  new_params = accept_params(params, :id, :zona, :name, :type, :content, :prio, :ttl)
   #@call = "http://localhost:8080/record" + "/" + "#{params[:id]}" + "/edit/"
   #response = RestClient.put @call,
   response = RestClient.put 'http://localhost:8080/record/edit',
         {
                 :id => params[:id],
+                :zona => params[:zona],
                 :name => params[:name],
                 :type => params[:type],
                 :content => params[:content],

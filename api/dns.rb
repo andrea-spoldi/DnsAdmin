@@ -198,12 +198,13 @@ get "/zona/:id/records", :provides => :json do
  put "/record/edit", :provides => :json do
         content_type :json
         new_params = accept_params(params, :id, :name, :type, :content, :prio, :ttl)
-                if record = DnsRecord.first_or_create(:id => params[:id].to_i)
-                        record.attributes = record.attributes.merge(new_params)
-                if record.save
-                        record.to_json
+                if zona = DnsZone.first(:name => params[:zona].to_s)
+                        modified = zona.dns_records.first(:id => params[:id].to_s)
+                        modified.attributes = modified.attributes.merge(new_params)
+                if modified.save
+                        zona.dns_records.to_json
                         else
-                        json_status 400, record.errors.to_hash
+                        json_status 400, zona.dns_records.errors.to_hash
                 end
                 else
                         json_status 404, "Not found"
