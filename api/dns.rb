@@ -38,8 +38,8 @@ module Validations
 end
 class DnsZone
 	include DataMapper::Resource
-	include StandardProperties
-        extend Validations
+	#include StandardProperties
+        #extend Validations
 	# property <name>, <type>
 	property :id, Serial
 	property :name, String, :required => true, :length => 255
@@ -64,8 +64,8 @@ end
 
 class DnsRecord
    	include DataMapper::Resource
-        include StandardProperties
-        extend Validations
+        #include StandardProperties
+        #extend Validations
 	property :id, Serial
 	property :name, String, :required => false, :length => 255, :index => [:name, :name_active_zone, :name_active_rtype_zone]
 	property :type, String, :required => true, :default => 'a', :length => 10, :index => [:name_active_rtype_zone]
@@ -186,7 +186,9 @@ get "/zona/:id/records", :provides => :json do
                 if zona = DnsZone.first(:name => params[:zona].to_s)
                         newrecord = zona.dns_records.create(new_params)
                 if zona.dns_records.save
-                        zona.dns_records.to_json
+			zona.serial = zona.generate_serial
+			zona.save
+                        #zona.dns_records.to_json
                         else
                         json_status 400, zona.dns_records.errors.to_hash
                 end
@@ -199,10 +201,12 @@ get "/zona/:id/records", :provides => :json do
         content_type :json
         new_params = accept_params(params, :id, :name, :type, :content, :prio, :ttl)
                 if zona = DnsZone.first(:name => params[:zona].to_s)
-                        modified = zona.dns_records.first(:id => params[:id].to_s)
+                        modified = zona.dns_records.first_or_create(:id => params[:id].to_s)
                         modified.attributes = modified.attributes.merge(new_params)
                 if modified.save
-                        zona.dns_records.to_json
+                        zona.serial = zona.generate_serial
+			zona.save 
+			#zona.dns_records.to_json
                         else
                         json_status 400, zona.dns_records.errors.to_hash
                 end
