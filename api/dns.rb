@@ -69,8 +69,8 @@ class DnsRecord
 	property :id, Serial
 	property :name, String, :required => false, :length => 255, :index => [:name, :name_active_zone, :name_active_rtype_zone]
 	property :type, String, :required => true, :default => 'a', :length => 10, :index => [:name_active_rtype_zone]
-	#property :content, String, :required => true, :length => 255
-	property :content, IPAddress, :required => true, :length => 255
+	property :content, String, :required => true, :length => 255
+	#property :content, IPAddress, :required => true, :length => 255
 	property :prio, Integer, :default => 10
 	property :ttl, Integer, :default => 86400
 	property :active, Boolean, :required => true, :default => true, :index => [:name_active_zone, :name_active_rtype_zone]
